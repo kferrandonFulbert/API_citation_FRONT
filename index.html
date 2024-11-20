@@ -86,6 +86,7 @@
     </div>
 
     <script>
+window.addEventListener("load", async (event) => {
         // Fonction pour ajouter une nouvelle citation via l'API
         document.getElementById('citationForm').addEventListener('submit', async function(event) {
             event.preventDefault();
@@ -129,13 +130,14 @@
             const citationList = document.getElementById('citationList');
             citationList.innerHTML = ''; // Vider la liste avant de la remplir
 console.log(citations);
-           citations.forEach(citation => {
+           citations.forEach(async citation => {
                 const citationItem = document.createElement('div');
                 citationItem.classList.add('citation-item');
                 citationItem.innerHTML = `
                     <strong>${citation.Auteur}</strong> : ${citation.Texte}
                 `;
                 citationList.appendChild(citationItem);
+                await addToDB(citation);
             });
         }
 
@@ -162,6 +164,43 @@ console.log(citations);
 
 registerServiceWorker();
 
+
+
+
+
+const db = await initDB();
+
+async function initDB() {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open('Citations', 1);
+
+    request.onupgradeneeded = (event) => {
+      const db = event.target.result;
+      if (!db.objectStoreNames.contains('Citations')) {
+        const store = db.createObjectStore('citations', { keyPath: 'id', autoIncrement: true });
+        store.createIndex('Auteur', 'Auteur', { unique: false });
+      }
+    };
+
+    request.onsuccess = (event) => {
+      resolve(event.target.result);
+    };
+
+    request.onerror = (event) => {
+      reject('Error opening IndexedDB');
+    };
+  });
+}
+
+      // Fonction pour ajouter une citation à la base de données
+      async function addToDB(citation) {
+        const transaction = db.transaction(['citations'], 'readwrite');
+        const store = transaction.objectStore('citations');
+      //  console.log(citation);
+        await store.add(citation);
+      }
+
+});
     </script>
 </body>
 </html>
