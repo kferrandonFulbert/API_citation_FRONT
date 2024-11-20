@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Citations Science-Fiction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form, .citation-list {
+            margin-top: 20px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .citation-item {
+            background: #e2e2e2;
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Citations Science-Fiction</h1>
+
+        <!-- Formulaire pour ajouter une citation -->
+        <form id="citationForm">
+            <label for="auteur">Auteur :</label>
+            <input type="text" id="auteur" name="auteur" required>
+
+            <label for="texte">Texte :</label>
+            <textarea id="texte" name="texte" rows="3" required></textarea>
+
+            <button type="submit">Ajouter la citation</button>
+        </form>
+
+        <!-- Bouton pour charger toutes les citations -->
+        <button id="loadCitationsBtn">Charger les citations</button>
+
+        <!-- Liste des citations -->
+        <div class="citation-list" id="citationList"></div>
+    </div>
+
+    <script>
+        // Fonction pour ajouter une nouvelle citation via l'API
+        document.getElementById('citationForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const auteur = document.getElementById('auteur').value;
+            const texte = document.getElementById('texte').value;
+
+            try {
+                const response = await fetch('http://localhost:8080/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ Auteur: auteur, Texte: texte })
+                });
+
+                if (response.ok) {
+                    alert('Citation ajoutée avec succès !');
+                    document.getElementById('citationForm').reset(); // Réinitialiser le formulaire
+                } else {
+                    alert('Erreur lors de l\'ajout de la citation.');
+                }
+            } catch (error) {
+                console.error('Erreur :', error);
+                alert('Impossible d\'ajouter la citation.');
+            }
+        });
+
+        // Fonction pour charger toutes les citations via l'API
+        document.getElementById('loadCitationsBtn').addEventListener('click', async function() {
+            
+            fetch('https://back.test/APILivre/')
+            .then((reponse) =>  reponse.json())
+            .then((data) => displayCitations(data))
+            .catch((error)=>{console.error(error);});
+
+        });
+
+        // Fonction pour afficher les citations dans la liste
+        function displayCitations(citations) {
+            const citationList = document.getElementById('citationList');
+            citationList.innerHTML = ''; // Vider la liste avant de la remplir
+console.log(citations);
+           citations.forEach(citation => {
+                const citationItem = document.createElement('div');
+                citationItem.classList.add('citation-item');
+                citationItem.innerHTML = `
+                    <strong>${citation.Auteur}</strong> : ${citation.Texte}
+                `;
+                citationList.appendChild(citationItem);
+            });
+        }
+    </script>
+</body>
+</html>

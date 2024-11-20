@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+
+        // Début du chronomètre
+const startTime = performance.now();
+
+// Bloc de code pour lequel vous souhaitez mesurer le temps d'exécution
+// Par exemple, une boucle simple
+for (let i = 0; i < 1000000; i++) {
+    // Ne faites rien ici, juste pour l'exemple
+}
+
+// Fin du chronomètre
+const endTime = performance.now();
+
+// Calcul du temps d'exécution en millisecondes
+const executionTime = endTime - startTime;
+
+console.log(`Temps d'exécution : ${executionTime} millisecondes`);
+    </script>
+</body>
+</html>
