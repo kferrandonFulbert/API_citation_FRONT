@@ -1,0 +1,38 @@
+{
+  "name": "Citations",
+  "short_name": "Citations",
+  "description": "Les meilleurs Citations du monde en un seul clic sur ton telephone ou PC.",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "web-app-manifest-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "web-app-manifest-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "screenshots": [    
+    {
+      "src": "web-app-manifest-320x320.png",
+      "sizes": "320x320",
+      "type": "image/png",
+      "form_factor": "narrow", 
+        "label": "Application"
+    },
+    {
+      "src": "web-app-manifest-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "wide"
+      }
+ ]
+}
